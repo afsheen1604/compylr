@@ -169,8 +169,12 @@ export async function POST(req: Request) {
                 error: result.status.description || "Unknown error occurred",
             });
         }
-    } catch(error: any){
-        console.error("API Error:", error);
-        return NextResponse.json({error: error.message}, {status: 500});
+    } catch(error: unknown){
+    console.error("API Error:", error);
+    if (error instanceof Error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
+    return NextResponse.json({ error: "Unknown error occurred" }, { status: 500 });
+    }
+
 }

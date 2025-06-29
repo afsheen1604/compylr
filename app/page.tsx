@@ -50,9 +50,13 @@ export default function Home() {
       else{
         setOutput(data.output);
       }
-    } catch(err: any){
+    } catch (err: unknown) {
+    if (err instanceof Error) {
       setError(err.message);
-    } finally{
+    } else {
+      setError("Something went wrong");
+    }
+  } finally{
       setIsRunning(false);
     }
   };
@@ -63,10 +67,21 @@ export default function Home() {
     }
   };
 
+  // React.useEffect(() => {
+  //   document.addEventListener("keydown", handleKeyDown);
+  //   return () => document.removeEventListener("keydown", handleKeyDown);
+  // }, [code, language]);
   React.useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [code, language]);
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      handleRun();
+    }
+  };
+
+  document.addEventListener("keydown", handleKeyDown);
+  return () => document.removeEventListener("keydown", handleKeyDown);
+}, [code, language]);
+
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4">
