@@ -11,7 +11,7 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ code, setCode}) => {
             <textarea
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="w-full h-full bf-transparent resize-none focus:outline-none font-mono text-sm text-gray-100"
+                className="w-full h-full bg-transparent resize-none focus:outline-none font-mono text-sm text-gray-100"
                 placeholder="Enter your code here..."
                 spellCheck="false"
             />

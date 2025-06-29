@@ -24,7 +24,7 @@ export default function Home() {
     setCode(STARTER_CODE[language as keyof typeof STARTER_CODE]);
   }, [language]);
 
-  const handleRun = async () => {
+  const handleRun = React.useCallback(async () => {
     setIsRunning(true);
     setError("");
     setOutput("");
@@ -59,29 +59,18 @@ export default function Home() {
   } finally{
       setIsRunning(false);
     }
-  };
-  
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if((e.ctrlKey || e.metaKey) && e.key === "Enter"){
-      handleRun();
-    }
-  };
+  }, [code, language]);
 
-  // React.useEffect(() => {
-  //   document.addEventListener("keydown", handleKeyDown);
-  //   return () => document.removeEventListener("keydown", handleKeyDown);
-  // }, [code, language]);
   React.useEffect(() => {
-  const handleKeyDown = (e: KeyboardEvent) => {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      handleRun();
-    }
-  };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        handleRun();
+      }
+    };
 
-  document.addEventListener("keydown", handleKeyDown);
-  return () => document.removeEventListener("keydown", handleKeyDown);
-}, [code, language]);
-
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleRun]);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800 text-white p-4">
